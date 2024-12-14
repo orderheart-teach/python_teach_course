@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        nav {
+            background: #337ab7;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .weather-form {
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .weather-info {
+            margin-top: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .weather-info h3,
+        .weather-info h5 {
+            margin: 5px 0;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <h1>Weather App</h1>
+    </nav>
+
+    <!-- Search Form -->
+    <div class="weather-form container">
+        <form method="post" class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" name="city" placeholder="Enter city name" required>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                <i class="glyphicon glyphicon-search"></i> Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Weather Info -->
+    <div class="container">
+        {% if data and data.country_code and data.coordinate and data.temp and data.pressure and data.humidity %}
+        <div class="weather-info col-md-6 col-md-offset-3 text-center">
+            <h3>Country Code: {{ data.country_code }}</h3>
+            <h5>City Name: {{ data.cityname }}</h5>
+            <h5>Coordinates: {{ data.coordinate }}</h5>
+            <h5>Temperature (Kelvin): {{ data.temp }}</h5>
+            <h5>Temperature (Celsius): {{ data.temp_cel }}</h5>
+            <h5>Pressure: {{ data.pressure }} hPa</h5>
+            <h5>Humidity: {{ data.humidity }}%</h5>
+        </div>
+        {% else %}
+        <div class="weather-info col-md-6 col-md-offset-3 text-center">
+            <h5>Please enter a valid city name to get weather details.</h5>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Weather App. All rights reserved.</p>
+    </footer>
+</body>
+
+</html>

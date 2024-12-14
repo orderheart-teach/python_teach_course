@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('https://images.unsplash.com/photo-1602100921807-7b14f08f2ec6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        nav.navbar {
+            background: #337ab7;
+            border: none;
+            border-radius: 0;
+            margin-bottom: 0;
+        }
+
+        nav.navbar h1 {
+            color: white;
+            margin: 0;
+            font-weight: 700;
+        }
+
+        .navbar .user-info {
+            color: #fff;
+            margin-right: 20px;
+            font-size: 16px;
+        }
+
+        .weather-form {
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .weather-form .form-control {
+            width: 70%;
+            display: inline-block;
+        }
+
+        .weather-info {
+            margin-top: 20px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 30px 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .weather-info h3 {
+            margin: 10px 0;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        .weather-info h5 {
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: 400;
+        }
+
+        .weather-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: #888;
+            padding: 20px 0;
+        }
+
+        .login-links a {
+            color: #fff;
+            font-size: 14px;
+            margin-left: 15px;
+        }
+
+        .login-links a:hover {
+            color: #f1f1f1;
+            text-decoration: none;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .weather-info {
+                margin-top: 20px;
+                padding: 20px;
+            }
+            .weather-form .form-control {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <h1>Weather App</h1>
+                </a>
+            </div>
+            <p class="navbar-text navbar-right user-info">
+                Hello, {{ username if username else 'Guest' }}
+                <span class="login-links">
+                    {% if username and username != 'Guest' %}
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                    {% else %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    {% endif %}
+                </span>
+            </p>
+        </div>
+    </nav>
+
+    <!-- Search Form -->
+    <div class="weather-form container">
+        <form method="post" class="form-inline">
+            <div class="form-group">
+                <input type="text" class="form-control" name="city" placeholder="Enter city name" required>
+            </div>
+            <button class="btn btn-primary" type="submit">
+                <i class="glyphicon glyphicon-search"></i> Search
+            </button>
+        </form>
+    </div>
+
+    <!-- Weather Info -->
+    <div class="container">
+        {% if data %}
+        <div class="weather-info col-md-6 col-md-offset-3 text-center">
+            {% if data.icon %}
+            <img src="http://openweathermap.org/img/wn/{{ data.icon }}@2x.png" alt="weather icon" class="weather-icon">
+            {% endif %}
+            <h3>{{ data.cityname }}, {{ data.country_code }}</h3>
+            <h5><strong>Description:</strong> {{ data.description }}</h5>
+            <h5><strong>Coordinates:</strong> {{ data.coordinate }}</h5>
+            <h5><strong>Temperature:</strong> {{ data.temp }} ({{ data.temp_cel }})</h5>
+            <h5><strong>Pressure:</strong> {{ data.pressure }} hPa</h5>
+            <h5><strong>Humidity:</strong> {{ data.humidity }}%</h5>
+        </div>
+        {% else %}
+        <div class="weather-info col-md-6 col-md-offset-3 text-center">
+            <h5>Please enter a valid city name to get weather details.</h5>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Weather App. All rights reserved. | Designed with <i class="fas fa-heart text-danger"></i> for weather enthusiasts. Created by Yuyang Song.</p>
+    </footer>
+</body>
+
+</html>
