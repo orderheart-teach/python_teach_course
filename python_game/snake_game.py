@@ -9,7 +9,7 @@ delay = 0.1
 score = 0
 high_score = 0
 
-# 
+# screen setup
 wn = turtle.Screen()
 wn.title("snake game")
 wn.bgcolor("black")
@@ -25,7 +25,7 @@ head.penup()  # no draw line
 head.goto(0, 0)
 head.direction = "stop"  # stop
 
-# 创建食物
+# create food
 food = turtle.Turtle()
 food.speed(0)
 food.shape("circle")
@@ -33,9 +33,9 @@ food.color("red")
 food.penup()
 food.goto(0, 100)
 
-segments = []  # sname body
+segments = []  # snake body
 
-# data board
+# score board
 pen = turtle.Turtle()
 pen.speed(0)
 pen.shape("square")
@@ -43,7 +43,7 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 260)
-pen.write("cuurrent score: 0  highest score: 0", align="center", font=("Courier", 24, "normal"))
+pen.write("current score: 0  highest score: 0", align="center", font=("Courier", 24, "normal"))
 
 # move functions
 def go_up():
@@ -62,7 +62,7 @@ def go_right():
     if head.direction != "left":
         head.direction = "right"
 
-# snake move fuction
+# snake move function
 def move():
     if head.direction == "up":
         y = head.ycor()
@@ -77,41 +77,41 @@ def move():
         x = head.xcor()
         head.setx(x + 20)
 
-# 键盘绑定
+# board key events
 wn.listen()
 wn.onkeypress(go_up, "Up")
 wn.onkeypress(go_down, "Down")
 wn.onkeypress(go_left, "Left")
 wn.onkeypress(go_right, "Right")
 
-# 主游戏循环
+# main game loop
 while True:
     wn.update()
 
-    # 检查碰撞边界
+    # check collision with border
     if head.xcor() > 290 or head.xcor() < -290 or head.ycor() > 290 or head.ycor() < -290:
         time.sleep(1)
         head.goto(0, 0)
         head.direction = "stop"
 
-        # 隐藏蛇身所有段
+        # hide snake body segments
         for segment in segments:
-            segment.goto(1000, 1000)  # 将蛇身段移出屏幕
+            segment.goto(1000, 1000)  # move segments out of screen
         segments.clear()
 
-        # 重置分数
+        # reset score
         score = 0
         pen.clear()
-        pen.write(f"分数: {score}  最高分: {high_score}", align="center", font=("Courier", 24, "normal"))
+        pen.write(f"score: {score}  high score: {high_score}", align="center", font=("Courier", 24, "normal"))
 
-    # 检查碰撞食物
+    # check collision with food
     if head.distance(food) < 20:
-        # 移动食物到随机位置
+        # move food to random position
         x = random.randint(-290, 290)
         y = random.randint(-290, 290)
         food.goto(x, y)
 
-        # 添加新的蛇身段
+        # add new segment to snake body
         new_segment = turtle.Turtle()
         new_segment.speed(0)
         new_segment.shape("square")
@@ -119,14 +119,14 @@ while True:
         new_segment.penup()
         segments.append(new_segment)
 
-        # 增加分数
+        # increase score
         score += 10
         if score > high_score:
             high_score = score
         pen.clear()
-        pen.write(f"分数: {score}  最高分: {high_score}", align="center", font=("Courier", 24, "normal"))
+        pen.write(f"score: {score}  high score: {high_score}", align="center", font=("Courier", 24, "normal"))
 
-    # 移动蛇身
+    # move snake body
     for index in range(len(segments)-1, 0, -1):
         x = segments[index-1].xcor()
         y = segments[index-1].ycor()
@@ -138,22 +138,21 @@ while True:
 
     move()
 
-    # 检查蛇头是否撞到蛇身
+    # check if snake head collides with its body
     for segment in segments:
         if segment.distance(head) < 20:
             time.sleep(1)
             head.goto(0, 0)
-            head.direction = "停止"
+            head.direction = "stop"
 
-            # 隐藏蛇身所有段
+            # hide snake body segments
             for segment in segments:
                 segment.goto(1000, 1000)
             segments.clear()
 
-            # 重置分数
+            # reset score
             score = 0
             pen.clear()
-            pen.write(f"分数: {score}  最高分: {high_score}", align="center", font=("Courier", 24, "normal"))
+            pen.write(f"score: {score}  high score: {high_score}", align="center", font=("Courier", 24, "normal"))
 
     time.sleep(delay)
-
